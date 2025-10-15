@@ -1,23 +1,36 @@
 import { defineStore } from 'pinia'
 
-export const usePaymentStore = defineStore('paymentStore', {
+// Load users from localStorage or use default
+function loadUsers() {
+  const data = localStorage.getItem('users')
+  return data ? JSON.parse(data) : [
+    { id: 1, name: 'Alice', email: 'alice@company.com', role: 'Admin', createdAt: '2025-10-14' },
+    { id: 2, name: 'Bob', email: 'bob@company.com', role: 'Manager', createdAt: '2025-10-14' },
+  ]
+}
+
+export const useUserStore = defineStore('userStore', {
   state: () => ({
-    payments: [
-      { id: 1, amount: 500, type: 'Credit', status: 'Pending', userId: 1, paymentDate: '2025-10-14' },
-      { id: 2, amount: 200, type: 'Debit', status: 'Completed', userId: 2, paymentDate: '2025-10-13' },
-    ],
-    nextPaymentId: 3 // start counting from 3
+    users: loadUsers(),
+    nextUserId: Number(localStorage.getItem('nextUserId')) || 3
   }),
   actions: {
-    addPayment(payment) {
-      payment.id = this.nextPaymentId++
-      payment.paymentDate = new Date().toISOString().split('T')[0]
-      this.payments.push(payment)
+    addUser(user) {
+      user.id = this.nextUserId++
+      user.createdAt = new Date().toISOString().split('T')[0]
+      this.users.push(user)
+      localStorage.setItem('users', JSON.stringify(this.users))
+      localStorage.setItem('nextUserId', this.nextUserId)
     },
-    updatePayment(updatedPayment) {
-      const index = this.payments.findIndex(p => p.id === updatedPayment.id)
+    updateUser(updatedUser) {
+      const index = this.users.findIndex(u => u.id === updatedUser.id)
       if (index !== -1) {
-        this.payments[index] = { ...this.payments[index], ...updatedPayment }
+        this.users[index] = { 
+          ...this.users[index], 
+          ...updatedUser, 
+          updatedAt: new Date().toISOString().split('T')[0] 
+        }
+        localStorage.setItem('users', JSON.stringify(this.users))
       }
     }
   }
