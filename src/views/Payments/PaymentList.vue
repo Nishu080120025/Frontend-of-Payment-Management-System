@@ -1,44 +1,6 @@
 <template>
   <div class="payment-list">
     <h2>Payments</h2>
-
-    <!-- Filters -->
-    <div class="filters">
-      <!-- Status -->
-      <label>
-        Status:
-        <select v-model="filterStatus">
-          <option value="">All</option>
-          <option>Pending</option>
-          <option>Completed</option>
-          <option>Failed</option>
-        </select>
-      </label>
-
-      <!-- Type -->
-      <label>
-        Type:
-        <select v-model="filterType">
-          <option value="">All</option>
-          <option>Credit</option>
-          <option>Debit</option>
-        </select>
-      </label>
-
-      <!-- Date -->
-      <label>
-        Date:
-        <input type="date" v-model="filterDate" />
-      </label>
-
-      <!-- Amount (min) -->
-      <label>
-        Amount ≥
-        <input type="number" v-model.number="filterAmount" placeholder="Min amount" />
-      </label>
-    </div>
-
-    <!-- Payments Table -->
     <table>
       <thead>
         <tr>
@@ -54,11 +16,11 @@
       <tbody>
         <tr v-for="payment in filteredPayments" :key="payment.id">
           <td data-label="ID">{{ payment.id }}</td>
-          <td data-label="User">{{ payment.user }}</td>
+          <td data-label="User">{{ payment.user || getUserName(payment.userId) }}</td>
           <td data-label="Amount">{{ payment.amount }}</td>
           <td data-label="Type">{{ payment.type }}</td>
           <td data-label="Status">{{ payment.status }}</td>
-          <td data-label="Date">{{ payment.date }}</td>
+          <td data-label="Date">{{ payment.paymentDate }}</td>
           <td data-label="Actions">
             <router-link :to="`/payments/${payment.id}`">View</router-link>
             |
@@ -68,7 +30,6 @@
       </tbody>
     </table>
 
-    <!-- Add New Payment Button -->
     <router-link to="/payments/new" class="add-button">Add New Payment</router-link>
   </div>
 </template>
@@ -76,22 +37,27 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { usePaymentStore } from '@/stores/PaymentStore.js'
+import { useUserStore } from '@/stores/UserStore.js'
 
 const paymentStore = usePaymentStore()
+const userStore = useUserStore()
 
-// Filters
 const filterStatus = ref('')
 const filterType = ref('')
 const filterDate = ref('')
 const filterAmount = ref('')
 
-// Computed filtered payments
+function getUserName(userId) {
+  const user = userStore.users.find(u => u.id === userId)
+  return user ? user.name : ''
+}
+
 const filteredPayments = computed(() => {
   return paymentStore.payments.filter(p => {
     return (
       (filterStatus.value === '' || p.status === filterStatus.value) &&
       (filterType.value === '' || p.type === filterType.value) &&
-      (filterDate.value === '' || p.date === filterDate.value) &&
+      (filterDate.value === '' || p.paymentDate === filterDate.value) &&
       (filterAmount.value === '' || p.amount >= filterAmount.value)
     )
   })

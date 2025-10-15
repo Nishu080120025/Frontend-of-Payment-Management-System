@@ -3,7 +3,7 @@
     <h2>{{ isEditMode ? 'Edit Payment' : 'Add New Payment' }}</h2>
 
     <form @submit.prevent="savePayment">
-      <!-- User -->
+      <!-- User (free text) -->
       <div class="form-group">
         <label for="user">User</label>
         <input type="text" id="user" v-model="payment.user" placeholder="Enter user name" required />
@@ -12,7 +12,7 @@
       <!-- Amount -->
       <div class="form-group">
         <label for="amount">Amount</label>
-        <input type="number" id="amount" v-model="payment.amount" placeholder="Enter amount" required />
+        <input type="number" id="amount" v-model.number="payment.amount" placeholder="Enter amount" required />
       </div>
 
       <!-- Type -->
@@ -20,8 +20,10 @@
         <label for="type">Type</label>
         <select id="type" v-model="payment.type" required>
           <option value="">Select Type</option>
-          <option value="Credit">Credit</option>
-          <option value="Debit">Debit</option>
+          <option value="Salary">Salary</option>
+          <option value="Subscriptions">Subscriptions</option>
+          <option value="Vendor Payments">Vendor Payments</option>
+          <option value="Client Payments">Client Payments</option>
         </select>
       </div>
 
@@ -29,7 +31,6 @@
       <div class="form-group">
         <label for="status">Status</label>
         <select id="status" v-model="payment.status" required>
-          <option value="">Select Status</option>
           <option value="Pending">Pending</option>
           <option value="Completed">Completed</option>
           <option value="Failed">Failed</option>
@@ -39,7 +40,7 @@
       <!-- Date -->
       <div class="form-group">
         <label for="date">Date</label>
-        <input type="date" id="date" v-model="payment.date" required />
+        <input type="date" id="date" v-model="payment.paymentDate" required />
       </div>
 
       <!-- Submit -->
@@ -59,47 +60,46 @@ const paymentStore = usePaymentStore()
 const route = useRoute()
 const router = useRouter()
 
-// Check if editing existing payment
 const isEditMode = ref(false)
-
-// Default empty payment object
 const payment = ref({
   id: null,
   user: '',
   amount: '',
-  type: '',
-  status: '',
-  date: ''
+  type: 'Salary',
+  status: 'Pending',
+  paymentDate: new Date().toISOString().slice(0,10)
 })
 
-// Check if route has payment id (for editing)
 onMounted(() => {
   const id = route.params.id
   if (id) {
-    const existingPayment = paymentStore.payments.find(p => p.id === Number(id))
-    if (existingPayment) {
-      payment.value = { ...existingPayment } // prefill existing data
+    const existing = paymentStore.getPaymentById(id)
+    if (existing) {
+      
+      payment.value = {
+        id: existing.id,
+        user: existing.user ?? '',
+        userId: existing.userId ?? null,
+        amount: existing.amount,
+        type: existing.type,
+        status: existing.status,
+        paymentDate: existing.paymentDate
+      }
       isEditMode.value = true
     }
   }
 })
 
-// Save or update payment
 function savePayment() {
+ 
   if (isEditMode.value) {
-    // Update existing payment
     paymentStore.updatePayment(payment.value)
   } else {
-    // Add new payment
-    
     paymentStore.addPayment(payment.value)
   }
-
-  // Redirect to payments list
   router.push('/payments')
 }
 </script>
-
 <style scoped>
 .payment-form {
   max-width: 500px;

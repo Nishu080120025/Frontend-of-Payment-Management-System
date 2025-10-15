@@ -4,7 +4,7 @@
 
     <div v-if="payment">
       <p><strong>ID:</strong> {{ payment.id }}</p>
-      <p><strong>User:</strong> {{ getUserName(payment.userId) }}</p>
+     <p><strong>User:</strong> {{ payment.user || getUserName(payment.userId) }}</p>
       <p><strong>Amount:</strong> {{ payment.amount }}</p>
       <p><strong>Type:</strong> {{ payment.type }}</p>
       <p><strong>Status:</strong> {{ payment.status }}</p>
