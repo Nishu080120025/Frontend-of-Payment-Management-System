@@ -2,6 +2,7 @@
   <nav class="navbar">
     <div class="logo">Payments Management</div>
     <div class="nav-links">
+      <router-link to="/dashboard" class="nav-link">Dashboard</router-link>
       <router-link to="/users">Users</router-link>
       <router-link to="/users/new">Add User</router-link>
       <router-link to="/payments">Payments</router-link>

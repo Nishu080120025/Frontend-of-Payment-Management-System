@@ -36,17 +36,18 @@
           <td>{{ user.id }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
-          <td>{{ user.role }}</td>
+          <td>
+            <span :class="['role-badge', user.role.toLowerCase()]">{{ user.role }}</span>
+          </td>
           <td>{{ user.createdAt }}</td>
           <td>{{ user.updatedAt || '-' }}</td>
           <td>
-            <router-link :to="`/users/edit/${user.id}`">Edit</router-link>
+            <router-link :to="`/users/edit/${user.id}`" class="edit-btn">Edit</router-link>
           </td>
         </tr>
       </tbody>
     </table>
 
-  
     <router-link to="/users/new" class="add-button">Add New User</router-link>
   </div>
 </template>
@@ -57,7 +58,7 @@ import { useUserStore } from '@/stores/UserStore.js'
 
 const userStore = useUserStore()
 
-// Filters
+// Filters for filtering users based on the following 
 const filterFromDate = ref('')
 const filterRole = ref('')
 
@@ -78,92 +79,108 @@ const filteredUsers = computed(() => {
 </script>
 
 <style scoped>
-.table-container {
-  background: #ffffff;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  max-width: 1100px;
-  margin: 20px auto;
+.user-list {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
 
-h2 {
+.user-list h2 {
+  margin-bottom: 15px;
   text-align: center;
-  margin-bottom: 20px;
-  color: #1e3a8a;
-  font-weight: 700;
 }
+
 
 .filters {
   display: flex;
+  gap: 20px;
   flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  align-items: center;
 }
 
-label {
+.filters label {
   display: flex;
   flex-direction: column;
-  font-weight: 600;
-  color: #374151;
+  font-weight: bold;
   font-size: 14px;
 }
 
-input, select {
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-  outline: none;
-  transition: all 0.2s;
+.filters input,
+.filters select {
+  padding: 6px 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
 }
 
-input:focus, select:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 4px rgba(59,130,246,0.3);
-}
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
-  font-size: 14px;
+  margin-bottom: 15px;
 }
 
 th, td {
-  padding: 12px 10px;
+  border: 1px solid #ddd;
+  padding: 8px;
   text-align: left;
-  border-bottom: 1px solid #e5e7eb;
 }
 
 th {
-  background-color: #f3f4f6;
-  color: #111827;
-  font-weight: 600;
+  background-color: #f3f3f3;
 }
 
-tr:hover {
-  background-color: #f9fafb;
-  transition: background 0.2s;
+
+.edit-btn {
+  display: inline-block;
+  padding: 5px 12px;
+  background-color: #ef4444; /* red */
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
 }
+
+.edit-btn:hover {
+  background-color: #b91c1c;
+}
+
+
+.role-badge {
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+
+.role-badge.admin { background-color: #2563eb; }   
+.role-badge.manager { background-color: #f59e0b; }  
+.role-badge.staff { background-color: #10b981; }    
+.role-badge.supervisor { background-color: #8b5cf6; } 
+.role-badge.default { background-color: #6b7280; } 
+
 
 .add-button {
   display: inline-block;
-  padding: 10px 16px;
-  background-color: #3b82f6;
+  padding: 8px 12px;
+  background-color: #2563eb;
   color: white;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: 5px;
   text-decoration: none;
-  transition: all 0.2s;
 }
 
 .add-button:hover {
-  background-color: #2563eb;
-  transform: translateY(-2px);
+  background-color: #1e4bb8;
 }
 
 /* Responsive table */
-@media (max-width: 640px) {
+@media (max-width: 600px) {
   table, thead, tbody, th, td, tr {
     display: block;
   }
@@ -173,17 +190,16 @@ tr:hover {
   td {
     position: relative;
     padding-left: 50%;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 
   td::before {
     content: attr(data-label);
     position: absolute;
     left: 0;
-    width: 45%;
-    font-weight: 600;
+    width: 50%;
+    font-weight: bold;
     padding-left: 8px;
-    color: #374151;
   }
 }
 </style>

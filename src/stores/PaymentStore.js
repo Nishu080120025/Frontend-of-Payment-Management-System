@@ -13,8 +13,8 @@ function loadPayments() {
   })()
 
   const defaults = [
-    { id: 1, userId: 1, user: 'Alice', amount: 500, type: 'Credit', status: 'Pending', paymentDate: '2025-10-14' },
-    { id: 2, userId: 2, user: 'Bob', amount: 200, type: 'Debit', status: 'Completed', paymentDate: '2025-10-13' },
+    { id: 1, userId: 1, user: 'Ankit biswas', amount: 500, type: 'Credit', status: 'Pending', paymentDate: '2025-10-14' },
+    { id: 2, userId: 2, user: 'Bobby singh', amount: 200, type: 'Debit', status: 'Completed', paymentDate: '2025-10-13' },
   ]
 
   const arr = raw && Array.isArray(raw) ? raw : defaults
@@ -104,10 +104,7 @@ export const usePaymentStore = defineStore('paymentStore', {
     getPaymentById(id) {
       return this.payments.find(p => Number(p.id) === Number(id)) || null
     },
-    // deletePayment(id) {
-    //   this.payments = this.payments.filter(p => p.id !== id)
-    //   this.persist()
-    // }
+    
 
   }
 })

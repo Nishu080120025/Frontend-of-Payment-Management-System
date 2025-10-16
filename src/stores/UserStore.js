@@ -23,8 +23,8 @@ function loadUsers() {
   }
 
   return [
-    { id: 1, name: 'Alice', email: 'alice@company.com', role: 'Admin', createdAt: '2025-10-14', updatedAt: null },
-    { id: 2, name: 'Bob',   email: 'bob@company.com',   role: 'Manager', createdAt: '2025-10-14', updatedAt: null }
+    { id: 1, name: 'Ankit Bhardwaj', email: 'ankit@gmail.com', role: 'Admin', createdAt: '2025-10-14', updatedAt: null },
+    { id: 2, name: 'Raj yadav',   email: 'yadav@yahoo.com',   role: 'Manager', createdAt: '2025-10-14', updatedAt: null }
   ]
 }
 

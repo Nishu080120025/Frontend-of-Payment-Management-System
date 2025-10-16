@@ -55,12 +55,31 @@
           <td data-label="User">{{ payment.user || getUserName(payment.userId) }}</td>
           <td data-label="Amount">{{ payment.amount }}</td>
           <td data-label="Type">{{ payment.type }}</td>
-          <td data-label="Status">{{ payment.status }}</td>
+
+          <!-- Status with color -->
+          <td 
+            data-label="Status"
+            :class="['status', payment.status.toLowerCase()]"
+          >
+            {{ payment.status }}
+          </td>
+
           <td data-label="Date">{{ payment.paymentDate }}</td>
+
+          <!-- Action buttons -->
           <td data-label="Actions">
-            <router-link :to="`/payments/${payment.id}`">View</router-link>
-            |
-            <router-link :to="`/payments/edit/${payment.id}`">Edit</router-link>
+            <router-link
+              :to="`/payments/${payment.id}`"
+              class="view-btn"
+            >
+              View
+            </router-link>
+            <router-link
+              :to="`/payments/edit/${payment.id}`"
+              class="edit-btn"
+            >
+              Edit
+            </router-link>
           </td>
         </tr>
       </tbody>
@@ -84,7 +103,6 @@ const filterType = ref('')
 const filterAmount = ref('')
 const filterDate = ref('')
 
-
 function getUserName(userId) {
   const user = userStore.users.find(u => u.id === userId)
   return user ? user.name : ''
@@ -102,100 +120,8 @@ const filteredPayments = computed(() => {
 })
 </script>
 
-<!-- <style scoped>
-.payment-list {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
-  max-width: 1000px;
-  margin: 20px auto;
-}
-
-h2 {
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-/* Filters */
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 15px;
-}
-
-.filters label {
-  display: flex;
-  flex-direction: column;
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.filters input,
-.filters select {
-  padding: 6px 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-/* Table styles */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 15px;
-}
-
-th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-th {
-  background-color: #f3f3f3;
-}
-
-.add-button {
-  display: inline-block;
-  padding: 8px 12px;
-  background-color: #2563eb;
-  color: white;
-  border-radius: 5px;
-  text-decoration: none;
-}
-
-.add-button:hover {
-  background-color: #1e4bb8;
-}
-
-/* Responsive table */
-@media (max-width: 600px) {
-  table, thead, tbody, th, td, tr {
-    display: block;
-  }
-
-  th { display: none; }
-
-  td {
-    position: relative;
-    padding-left: 50%;
-    margin-bottom: 10px;
-  }
-
-  td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 0;
-    width: 50%;
-    font-weight: bold;
-    padding-left: 8px;
-  }
-}
-</style> -->
 <style scoped>
-.table-container {
+.payment-list {
   background: #ffffff;
   padding: 25px;
   border-radius: 12px;
@@ -211,6 +137,7 @@ h2 {
   font-weight: 700;
 }
 
+/* Filters */
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -239,6 +166,7 @@ input:focus, select:focus {
   box-shadow: 0 0 4px rgba(59,130,246,0.3);
 }
 
+/* Table styles */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -263,6 +191,64 @@ tr:hover {
   transition: background 0.2s;
 }
 
+/* Status color badges */
+.status {
+  font-weight: 600;
+  text-transform: capitalize;
+  padding: 6px 10px;
+  border-radius: 6px;
+  display: inline-block;
+  text-align: center;
+}
+
+.status.pending {
+  background-color: #fef3c7; /* light yellow */
+  color: #92400e;
+  border: 1px solid #fcd34d;
+}
+
+.status.completed {
+  background-color: #dcfce7; /* light green */
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+.status.failed {
+  background-color: #fee2e2; /* light red */
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+/* Action buttons */
+.view-btn,
+.edit-btn {
+  padding: 6px 12px;
+  margin-right: 5px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+  color: white;
+  transition: all 0.2s;
+}
+
+.view-btn {
+  background-color: #2563eb;
+}
+
+.view-btn:hover {
+  background-color: #1d4ed8;
+}
+
+.edit-btn {
+  background-color: #10b981;
+}
+
+.edit-btn:hover {
+  background-color: #059669;
+}
+
+/* Add button */
 .add-button {
   display: inline-block;
   padding: 10px 16px;
