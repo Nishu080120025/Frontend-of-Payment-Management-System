@@ -49,18 +49,6 @@ Testing: Vitest, Vue Test Utils, Pinia Testing Plugin
 
 Styling: Scoped CSS with responsive design
 
-## Project Structure
-src/
- ├─ components/       # Reusable components like buttons or cards
- ├─ stores/           # Pinia stores for managing users and payments
- ├─ views/            # Main pages: Dashboard, Users, Payments
- ├─ App.vue           # Root component
- └─ main.js           # App entry point
-
-tests/
- ├─ unit/             # Store tests for adding/updating users/payments
- ├─ components/       # Component tests for forms and lists
-
 
 ## Setup & Installation
 
