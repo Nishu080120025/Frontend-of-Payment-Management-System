@@ -12,6 +12,8 @@ import Navbar from './components/Navbar.vue'
 </script>
 
 <style>
+
+
 /* Global container */
 .app-container {
   min-height: 100vh;
@@ -20,14 +22,14 @@ import Navbar from './components/Navbar.vue'
   font-family: Arial, sans-serif;
 }
 
-/* Main content spacing */
+
 .main-content {
   max-width: 1000px;
   margin: 20px auto;
   padding: 10px;
 }
 
-/* Responsive */
+/* Responsive for different screens */
 @media (max-width: 600px) {
   .main-content {
     margin: 10px;

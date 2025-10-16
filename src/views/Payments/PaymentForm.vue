@@ -3,7 +3,7 @@
     <h2>{{ isEditMode ? 'Edit Payment' : 'Add New Payment' }}</h2>
 
     <form @submit.prevent="savePayment">
-      <!-- User (free text) -->
+      <!-- User  -->
       <div class="form-group">
         <label for="user">User</label>
         <input type="text" id="user" v-model="payment.user" placeholder="Enter user name" required />
@@ -44,9 +44,24 @@
       </div>
 
       <!-- Submit -->
-      <button type="submit" class="save-button">
+      <!-- <button type="submit" class="save-button">
         {{ isEditMode ? 'Update Payment' : 'Save Payment' }}
-      </button>
+      </button> -->
+      <div class="button-group">
+        <button type="submit" class="save-button">
+          {{ isEditMode ? 'Update Payment' : 'Save Payment' }}
+        </button>
+
+        <!-- Delete button only visible in edit mode -->
+        <button 
+          v-if="isEditMode" 
+          type="button" 
+          class="delete-button" 
+          @click="deletePayment"
+        >
+          Delete Payment
+        </button>
+      </div>
     </form>
   </div>
 </template>
@@ -99,6 +114,12 @@ function savePayment() {
   }
   router.push('/payments')
 }
+function deletePayment() {
+  if (confirm('Are you sure you want to delete this payment?')) {
+    paymentStore.deletePayment(payment.value.id)
+    router.push('/payments')
+  }
+}
 </script>
 <style scoped>
 .payment-form {
@@ -133,8 +154,12 @@ select {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-
-.save-button {
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.save-button,.delete-button {
   display: block;
   width: 100%;
   background-color: #4caf50;

@@ -129,7 +129,7 @@ input, select {
 button {
   width: 100%;
   padding: 10px;
-  background-color: #2563eb;
+  background-color: #4caf50;
   color: white;
   font-weight: bold;
   border: none;

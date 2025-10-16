@@ -77,7 +77,10 @@ export const useUserStore = defineStore('userStore', {
       }
       return false
     },
-
+    deleteUser(id) {
+      this.users = this.users.filter(u => u.id !== id)
+      this.persist()
+    },
     
     persist() {
       persistUsers(this.users, this.nextUserId)
