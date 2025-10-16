@@ -42,24 +42,10 @@
         <label for="date">Date</label>
         <input type="date" id="date" v-model="payment.paymentDate" required />
       </div>
-
-      <!-- Submit -->
-      <!-- <button type="submit" class="save-button">
-        {{ isEditMode ? 'Update Payment' : 'Save Payment' }}
-      </button> -->
+      
       <div class="button-group">
         <button type="submit" class="save-button">
           {{ isEditMode ? 'Update Payment' : 'Save Payment' }}
-        </button>
-
-        <!-- Delete button only visible in edit mode -->
-        <button 
-          v-if="isEditMode" 
-          type="button" 
-          class="delete-button" 
-          @click="deletePayment"
-        >
-          Delete Payment
         </button>
       </div>
     </form>

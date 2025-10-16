@@ -32,14 +32,24 @@
         <input type="text" :value="user.createdAt" disabled />
       </div>
 
-      <!-- Updated At (readonly) -->
+      <!-- Updated At  -->
       <div v-if="user.updatedAt" class="form-group">
         <label>Updated At</label>
         <input type="text" :value="user.updatedAt" disabled />
       </div>
 
-      <!-- Submit button -->
-      <button type="submit">{{ isEdit ? 'Update User' : 'Add User' }}</button>
+      <!-- Buttons -->
+      <div class="button-group">
+        <button type="submit">{{ isEdit ? 'Update User' : 'Add User' }}</button>
+        <button
+          v-if="isEdit"
+          type="button"
+          class="delete-button"
+          @click="deleteUser"
+        >
+          Delete User
+        </button>
+      </div>
     </form>
   </div>
 </template>
@@ -54,8 +64,6 @@ const router = useRouter()
 const route = useRoute()
 
 const isEdit = ref(false)
-
-// Default empty user
 const user = ref({
   name: '',
   email: '',
@@ -64,22 +72,21 @@ const user = ref({
   updatedAt: ''
 })
 
-// Check if editing an existing user
+// Load existing user if editing
 onMounted(() => {
   const id = route.params.id
   if (id) {
-    const existing = userStore.users.find(u => u.id == id)
+    const existing = userStore.users.find(u => Number(u.id) === Number(id))
     if (existing) {
       user.value = { ...existing }
       isEdit.value = true
     }
   } else {
-    // New user → set createdAt to today
     user.value.createdAt = new Date().toISOString().split('T')[0]
   }
 })
 
-// Handle form submission
+// Submit form
 function submitForm() {
   if (isEdit.value) {
     user.value.updatedAt = new Date().toISOString().split('T')[0]
@@ -87,9 +94,15 @@ function submitForm() {
   } else {
     userStore.addUser(user.value)
   }
-
-  // Navigate back to user list
   router.push('/users')
+}
+
+// Delete user
+function deleteUser() {
+  if (confirm('Are you sure you want to delete this user?')) {
+    userStore.deleteUser(user.value.id)
+    router.push('/users')
+  }
 }
 </script>
 
@@ -126,20 +139,37 @@ input, select {
   box-sizing: border-box;
 }
 
-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #4caf50;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 10px;
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-button:hover {
-  background-color: #1e4bb8;
+button {
+  flex: 1;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  color: white;
+}
+
+button[type="submit"] {
+  background-color: #4caf50;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+.delete-button {
+  background-color: #f44336;
+}
+
+.delete-button:hover {
+  background-color: #e53935;
 }
 
 /* Responsive */

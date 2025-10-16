@@ -2,6 +2,22 @@
   <div class="user-list">
     <h2>Users</h2>
 
+    <!-- Filters -->
+    <div class="filters">
+      <label>
+        Created From:
+        <input type="date" v-model="filterFromDate" />
+      </label>
+
+      <label>
+        Role:
+        <select v-model="filterRole">
+          <option value="">All Roles</option>
+          <option v-for="role in uniqueRoles" :key="role" :value="role">{{ role }}</option>
+        </select>
+      </label>
+    </div>
+
     <!-- Table of users -->
     <table>
       <thead>
@@ -16,7 +32,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="user in users" :key="user.id">
+        <tr v-for="user in filteredUsers" :key="user.id">
           <td>{{ user.id }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
@@ -30,85 +46,144 @@
       </tbody>
     </table>
 
-    <!-- Button to add new user -->
+  
     <router-link to="/users/new" class="add-button">Add New User</router-link>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useUserStore } from '@/stores/UserStore.js'
 
 const userStore = useUserStore()
 
-// Get all users from store
-const users = computed(() => userStore.users)
+// Filters
+const filterFromDate = ref('')
+const filterRole = ref('')
+
+
+const uniqueRoles = computed(() => {
+  const roles = userStore.users.map(u => u.role)
+  return [...new Set(roles)]
+})
+
+// Filtered users
+const filteredUsers = computed(() => {
+  return userStore.users.filter(u => {
+    const matchDate = !filterFromDate.value || u.createdAt >= filterFromDate.value
+    const matchRole = !filterRole.value || u.role === filterRole.value
+    return matchDate && matchRole
+  })
+})
 </script>
 
 <style scoped>
-.user-list {
-  background: white;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+.table-container {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  max-width: 1100px;
+  margin: 20px auto;
 }
 
-.user-list h2 {
-  margin-bottom: 15px;
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #1e3a8a;
+  font-weight: 700;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+}
+
+input, select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  outline: none;
+  transition: all 0.2s;
+}
+
+input:focus, select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 4px rgba(59,130,246,0.3);
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  font-size: 14px;
 }
 
 th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  padding: 12px 10px;
   text-align: left;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 th {
-  background-color: #f3f3f3;
+  background-color: #f3f4f6;
+  color: #111827;
+  font-weight: 600;
+}
+
+tr:hover {
+  background-color: #f9fafb;
+  transition: background 0.2s;
 }
 
 .add-button {
   display: inline-block;
-  padding: 8px 12px;
-  background-color: #2563eb;
+  padding: 10px 16px;
+  background-color: #3b82f6;
   color: white;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-weight: 600;
   text-decoration: none;
+  transition: all 0.2s;
 }
 
 .add-button:hover {
-  background-color: #1e4bb8;
+  background-color: #2563eb;
+  transform: translateY(-2px);
 }
 
 /* Responsive table */
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   table, thead, tbody, th, td, tr {
     display: block;
   }
 
-  th {
-    display: none;
-  }
+  th { display: none; }
 
   td {
     position: relative;
     padding-left: 50%;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
 
   td::before {
     content: attr(data-label);
     position: absolute;
     left: 0;
-    width: 50%;
-    font-weight: bold;
+    width: 45%;
+    font-weight: 600;
     padding-left: 8px;
+    color: #374151;
   }
 }
 </style>

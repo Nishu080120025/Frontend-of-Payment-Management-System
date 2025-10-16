@@ -48,42 +48,62 @@ onMounted(() => {
 <style scoped>
 .payment-detail {
   max-width: 500px;
-  margin: 20px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  margin: 25px auto;
+  padding: 30px 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  transition: all 0.2s;
+}
+
+.payment-detail:hover {
+  transform: translateY(-2px);
 }
 
 h2 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  color: #1e3a8a;
+  font-weight: 700;
 }
 
 p {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   font-size: 16px;
+  line-height: 1.5;
+  color: #374151;
+}
+
+p strong {
+  color: #111827;
 }
 
 .back-button {
   display: inline-block;
-  margin-top: 20px;
-  padding: 10px;
-  background-color: #2563eb;
+  margin-top: 25px;
+  padding: 12px 18px;
+  background-color: #3b82f6;
   color: white;
   text-decoration: none;
-  border-radius: 5px;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: all 0.2s;
 }
 
 .back-button:hover {
-  background-color: #1e4bb8;
+  background-color: #2563eb;
+  transform: translateY(-2px);
 }
 
 /* Responsive */
 @media (max-width: 600px) {
   .payment-detail {
-    padding: 15px;
-    margin: 10px;
+    padding: 20px;
+    margin: 15px;
+  }
+
+  p {
+    font-size: 15px;
   }
 }
 </style>

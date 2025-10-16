@@ -104,10 +104,10 @@ export const usePaymentStore = defineStore('paymentStore', {
     getPaymentById(id) {
       return this.payments.find(p => Number(p.id) === Number(id)) || null
     },
-    deletePayment(id) {
-      this.payments = this.payments.filter(p => p.id !== id)
-      this.persist()
-    }
+    // deletePayment(id) {
+    //   this.payments = this.payments.filter(p => p.id !== id)
+    //   this.persist()
+    // }
 
   }
 })

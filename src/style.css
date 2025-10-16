@@ -1,196 +1,79 @@
 
-/* Global Styles */
-
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  background-color: #242424;
-  color: rgba(255, 255, 255, 0.87);
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: none;
-}
-a:hover {
-  color: #535bf2;
-}
-
-/* App Container */
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: left; /* left-aligned for dashboards */
-}
-
-/* Navbar */
-
 .navbar {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #2563eb;
-  color: white;
+  background: linear-gradient(90deg, #2563eb, #3b82f6);
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
 }
 
-.nav-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
+.navbar:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
 }
 
 .nav-links a {
-  color: white;
-  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
 .nav-links a:hover {
-  text-decoration: underline;
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
 }
 
-
-/* Buttons (global) */
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #2563eb;
-  color: white;
-  cursor: pointer;
-  transition: all 0.25s;
-}
-
-button:hover {
-  background-color: #1e4bb8;
-}
-
-/* Router links styled as buttons */
-.back-button, .add-button {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 10px 15px;
-  background-color: #2563eb;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-}
-.back-button:hover, .add-button:hover {
-  background-color: #1e4bb8;
-}
-
-
-/* Tables (global) */
 
 table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+tbody tr:hover {
+  background-color: rgba(255,255,255,0.05);
+  transform: scale(1.002);
+  transition: all 0.2s ease;
+}
+
+tbody tr:nth-child(even) {
+  background-color: rgba(255,255,255,0.03);
+}
+
+
+button, .back-button, .add-button {
+  transition: all 0.3s ease;
+}
+
+button:hover, .back-button:hover, .add-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+
+input, select {
+  border-radius: 8px;
+  padding: 8px 10px;
+  border: 1px solid #555;
   background-color: #1e1e1e;
   color: white;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+  transition: all 0.2s ease;
 }
 
-thead {
-  background-color: #333;
+input:focus, select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 5px #2563eb;
 }
 
-th, td {
-  padding: 10px;
-  border: 1px solid #444;
-  text-align: left;
+
+.user-form, .payment-form, .payment-detail {
+  border-radius: 12px;
+  background-color: #1e1e1e;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  padding: 20px;
+  transition: all 0.3s ease;
 }
 
-/* Responsive table for small screens */
-@media (max-width: 600px) {
-  table, thead, tbody, th, td, tr {
-    display: block;
-  }
-
-  th {
-    display: none;
-  }
-
-  td {
-    position: relative;
-    padding-left: 50%;
-    text-align: left;
-    border: none;
-    border-bottom: 1px solid #444;
-  }
-
-  td::before {
-    position: absolute;
-    left: 10px;
-    top: 10px;
-    width: 45%;
-    white-space: nowrap;
-    font-weight: bold;
-    content: attr(data-label);
-  }
-}
-
-/* Dark / Light Mode */
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-
-  body {
-    background-color: #fff;
-    color: #213547;
-  }
-
-  table {
-    background-color: #f9f9f9;
-    color: #213547;
-  }
-
-  thead {
-    background-color: #e0e0e0;
-  }
-
-  input, select {
-    background-color: #fff;
-    color: #213547;
-    border: 1px solid #ccc;
-  }
-
-  button, .back-button, .add-button {
-    background-color: #2563eb;
-    color: white;
-  }
-
-  button:hover, .back-button:hover, .add-button:hover {
-    background-color: #1e4bb8;
-  }
-
-  a:hover {
-    color: #535bf2;
-  }
+.user-form:hover, .payment-form:hover, .payment-detail:hover {
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
 }
